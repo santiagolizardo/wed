@@ -4,8 +4,10 @@
 #include <sys/ioctl.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "keyboard.h"
+#include "version.h"
 
 struct buffer_t buffer;
 
@@ -21,13 +23,36 @@ void show_cursor() {
 	buffer_append(&buffer, "\x1b[?25h", 6);
 }
 
+void move_cursor() {
+	char buf[32];
+	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", config.cursor_y + 1, config.cursor_x + 1);
+	buffer_append(&buffer, buf, strlen(buf));
+}
+
 void clear_screen() {
 	buffer_append(&buffer, "\x1b[2J", 4);
 }
 
 void draw_rows() {
 	for(int y = 0; y < config.num_rows; y++) {
-		buffer_append(&buffer, "~", 1);
+		if(y == config.num_rows / 3) {
+			char welcome[80];
+			int welcomelen = snprintf(welcome, sizeof(welcome), WELCOME_MESSAGE);
+			if(welcomelen > config.num_cols) {
+				welcomelen = config.num_cols;
+			}
+			int padding = (config.num_cols - welcomelen) / 2;
+			if(padding) {
+				buffer_append(&buffer, "~", 1);
+				padding--;
+			}
+			while(padding--) {
+				buffer_append(&buffer, " ", 1);
+			}
+			buffer_append(&buffer, welcome, welcomelen);
+		} else {
+			buffer_append(&buffer, "~", 1);
+		}
 		buffer_append(&buffer, "\x1b[K", 3);
 		if(y < config.num_rows - 1) {
 			buffer_append(&buffer, "\r\n", 2);
@@ -42,7 +67,8 @@ void draw_screen() {
 	hide_cursor();
 	reset_cursor();
 	draw_rows();
-	reset_cursor();
+
+	move_cursor();
 	show_cursor();
 
 	write(STDOUT_FILENO, buffer.d, buffer.len);

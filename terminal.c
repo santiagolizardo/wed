@@ -6,6 +6,8 @@
 #include "screen.h"
 
 void init_config() {
+	config.cursor_x = config.cursor_y = 0;
+
 	if(obtain_window_size(&config.num_rows, &config.num_cols) == false) {
 		exit_error("obtain_window_size");
 	}

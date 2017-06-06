@@ -3,6 +3,7 @@
 #include <termios.h>
 
 struct config_t {
+	int cursor_x, cursor_y;
 	int num_rows, num_cols;
 	struct termios orig_termios;
 };

@@ -7,6 +7,9 @@
 
 #include "process.h"
 #include "screen.h"
+#include "terminal.h"
+
+extern struct config_t config;
 
 char read_key() {
 	int bytes_read;
@@ -19,6 +22,23 @@ char read_key() {
 	return c;
 }
 
+void update_cursor(char key) {
+	switch(key) {
+		case 'a':
+			config.cursor_x--;
+			break;
+		case 'd':
+			config.cursor_x++;
+			break;
+		case 'w':
+			config.cursor_y--;
+			break;
+		case 's':
+			config.cursor_y++;
+			break;
+	}
+}
+
 void process_keypress() {
 	char c = read_key();
 
@@ -26,6 +46,13 @@ void process_keypress() {
 		case CTRL_KEY('q'):
 			clear_screen();
 			exit(EXIT_SUCCESS);
+			break;
+
+		case 'w':
+		case 's':
+		case 'a':
+		case 'd':
+			update_cursor(c);
 			break;
 	}
 }
