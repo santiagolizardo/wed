@@ -1,7 +1,9 @@
 CC=gcc
-CFLAGS=-Wall -pedantic -std=c11
+CFLAGS=-Wall -pedantic -std=c11 -g
+SRCS=$(wildcard *.c)
+OBJS=$(SRCS:.c=.o)
 
-wed: screen.o keyboard.o terminal.o process.o main.o
+wed: $(OBJS) 
 	$(CC) -o $@ $^
 
 %.o: %.c

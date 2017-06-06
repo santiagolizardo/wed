@@ -7,29 +7,46 @@
 
 #include "keyboard.h"
 
+struct buffer_t buffer;
+
 void reset_cursor() {
-	write(STDOUT_FILENO, "\x1b[H", 3);
+	buffer_append(&buffer, "\x1b[H", 3);
+}
+
+void hide_cursor() {
+	buffer_append(&buffer, "\x1b[?25l", 6);
+}
+
+void show_cursor() {
+	buffer_append(&buffer, "\x1b[?25h", 6);
 }
 
 void clear_screen() {
-	write(STDOUT_FILENO, "\x1b[2J", 4);
-	reset_cursor();
+	buffer_append(&buffer, "\x1b[2J", 4);
 }
 
 void draw_rows() {
 	for(int y = 0; y < config.num_rows; y++) {
-		write(STDOUT_FILENO, "~", 1);
-
+		buffer_append(&buffer, "~", 1);
+		buffer_append(&buffer, "\x1b[K", 3);
 		if(y < config.num_rows - 1) {
-			write(STDOUT_FILENO, "\r\n", 2);
+			buffer_append(&buffer, "\r\n", 2);
 		}
 	}
 }
 
 void draw_screen() {
-	clear_screen();
+	buffer.d = NULL;
+	buffer.len = 0;
+
+	hide_cursor();
+	reset_cursor();
 	draw_rows();
 	reset_cursor();
+	show_cursor();
+
+	write(STDOUT_FILENO, buffer.d, buffer.len);
+	//buffer_free(&buffer);
 }
 
 bool get_cursor_position(int* rows, int* cols) {
