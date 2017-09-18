@@ -35,27 +35,35 @@ void clear_screen() {
 
 void draw_rows() {
 	for(int y = 0; y < config.num_rows; y++) {
-		if(y == config.num_rows / 3) {
-			char welcome[80];
-			int welcomelen = snprintf(welcome, sizeof(welcome), WELCOME_MESSAGE);
-			if(welcomelen > config.num_cols) {
-				welcomelen = config.num_cols;
-			}
-			int padding = (config.num_cols - welcomelen) / 2;
-			if(padding) {
+		if(y >= config.num_lines) {
+			if(config.num_lines == 0 && y == config.num_rows / 3) {
+				char welcome[80];
+				int welcomelen = snprintf(welcome, sizeof(welcome), WELCOME_MESSAGE);
+				if(welcomelen > config.num_cols) {
+					welcomelen = config.num_cols;
+				}
+				int padding = (config.num_cols - welcomelen) / 2;
+				if(padding) {
+					buffer_append(&buffer, "~", 1);
+					padding--;
+				}
+				while(padding--) {
+					buffer_append(&buffer, " ", 1);
+				}
+				buffer_append(&buffer, welcome, welcomelen);
+			} else {
 				buffer_append(&buffer, "~", 1);
-				padding--;
 			}
-			while(padding--) {
-				buffer_append(&buffer, " ", 1);
+			buffer_append(&buffer, "\x1b[K", 3);
+			if(y < config.num_rows - 1) {
+				buffer_append(&buffer, "\r\n", 2);
 			}
-			buffer_append(&buffer, welcome, welcomelen);
 		} else {
-			buffer_append(&buffer, "~", 1);
-		}
-		buffer_append(&buffer, "\x1b[K", 3);
-		if(y < config.num_rows - 1) {
-			buffer_append(&buffer, "\r\n", 2);
+			int len = config.line.size;
+			if(len > config.num_cols) {
+				len = config.num_cols;
+			}
+			buffer_append(&buffer, config.line.chars, len);
 		}
 	}
 }

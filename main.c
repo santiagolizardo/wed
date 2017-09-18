@@ -7,9 +7,13 @@
 #include "terminal.h"
 #include "screen.h"
 
-int main() {
+int main(int argc, char** argv) {
 	enable_raw_mode();
 	init_config();
+	if(argc >= 2) {
+		editor_open(argv[1]);
+	}
+
 	atexit(disable_raw_mode);
 
 	while(true) {
