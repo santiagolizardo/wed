@@ -11,7 +11,7 @@ struct config_t {
 	int cursor_x, cursor_y;
 	int num_rows, num_cols;
 	int num_lines;
-	line_t line;
+	line_t* line;
 	struct termios orig_termios;
 };
 

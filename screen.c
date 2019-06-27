@@ -59,11 +59,11 @@ void draw_rows() {
 				buffer_append(&buffer, "\r\n", 2);
 			}
 		} else {
-			int len = config.line.size;
+			int len = config.line[y].size;
 			if(len > config.num_cols) {
 				len = config.num_cols;
 			}
-			buffer_append(&buffer, config.line.chars, len);
+			buffer_append(&buffer, config.line[y].chars, len);
 		}
 	}
 }
