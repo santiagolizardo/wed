@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -pedantic -std=c11 -g
+CFLAGS=-Wall -Wextra -pedantic -std=c11 -g -D_POSIX_C_SOURCE=200809L
 SRCS=$(wildcard *.c)
 OBJS=$(SRCS:.c=.o)
 

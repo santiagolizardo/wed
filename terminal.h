@@ -15,8 +15,6 @@ struct config_t {
 	struct termios orig_termios;
 };
 
-struct config_t config;
-
 void init_config();
 
 void enable_raw_mode();

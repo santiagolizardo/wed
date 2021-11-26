@@ -8,6 +8,8 @@
 #include "process.h"
 #include "screen.h"
 
+struct config_t config;
+
 void init_config() {
 	config.cursor_x = config.cursor_y = 0;
 	config.num_lines = 0;
