@@ -3,7 +3,6 @@
 #include <stdbool.h>
 
 #include "terminal.h"
-#include "buffer.h"
 
 extern struct config_t config;
 

@@ -2,14 +2,11 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <errno.h>
 
 #include "process.h"
 #include "screen.h"
 #include "terminal.h"
-
-extern struct config_t config;
 
 enum editor_key {
 	ARROW_LEFT = 1000,
@@ -27,7 +24,7 @@ enum editor_key {
 };
 
 int read_key() {
-	int bytes_read;
+	ssize_t bytes_read;
 	char c;
 	while((bytes_read = read(STDIN_FILENO, &c, 1)) == -1) {
 		if(bytes_read == -1 && errno != EAGAIN) {
@@ -111,13 +108,12 @@ void update_cursor(int key) {
 }
 
 void process_keypress() {
-	int c = read_key();
+	const int c = read_key();
 
 	switch(c) {
 		case CTRL_KEY('q'):
 			clear_screen();
 			exit(EXIT_SUCCESS);
-			break;
 
 		case HOME_KEY:
 			config.cursor_x = 0;

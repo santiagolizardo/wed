@@ -14,3 +14,7 @@ To compile just run `make`.
 
 CTRL+q: Quit the app.
 
+## References
+
+- [Build your own text editor](https://viewsourcecode.org/snaptoken/kilo/)
+

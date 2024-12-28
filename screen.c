@@ -2,11 +2,10 @@
 
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "keyboard.h"
+#include "buffer.h"
 #include "version.h"
 
 struct buffer_t buffer;
@@ -80,7 +79,6 @@ void draw_screen() {
 	show_cursor();
 
 	write(STDOUT_FILENO, buffer.d, buffer.len);
-	//buffer_free(&buffer);
 }
 
 bool get_cursor_position(int* rows, int* cols) {

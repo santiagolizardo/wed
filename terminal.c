@@ -27,8 +27,8 @@ void enable_raw_mode() {
 	
 	struct termios raw_termios = config.orig_termios;
 	raw_termios.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-	raw_termios.c_oflag &= ~(OPOST);
-	raw_termios.c_cflag &= ~(CS8);
+	raw_termios.c_oflag &= ~OPOST;
+	raw_termios.c_cflag &= ~CS8;
 	raw_termios.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
 	raw_termios.c_cc[VMIN] = 0;
 	raw_termios.c_cc[VTIME] = 1;
@@ -44,10 +44,10 @@ void disable_raw_mode() {
 	}
 }
 
-void editor_append_line(char* s, size_t len) {
+void editor_append_line(const char* s, size_t len) {
 	config.line = realloc(config.line, sizeof(line_t) * (config.num_lines + 1));
 
-	int at = config.num_lines;
+	const int at = config.num_lines;
 	config.line[at].size = len;
 	config.line[at].chars = malloc(len + 1);
 	memcpy(config.line[at].chars, s, len);

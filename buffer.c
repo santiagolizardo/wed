@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void buffer_append(struct buffer_t* buffer, const char* s, int len) {
+void buffer_append(struct buffer_t* buffer, const char* s, const size_t len) {
 	char *new = realloc(buffer->d, buffer->len + len);
 
 	if(new == NULL) {
@@ -15,7 +15,7 @@ void buffer_append(struct buffer_t* buffer, const char* s, int len) {
 	buffer->len += len;
 }
 
-void buffer_free(struct buffer_t* buffer) {
+void buffer_free(const struct buffer_t* buffer) {
 	free(buffer->d);
 }
 

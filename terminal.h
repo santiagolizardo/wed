@@ -1,9 +1,10 @@
 #pragma once
 
+#include <stddef.h>
 #include <termios.h>
 
 typedef struct line_t {
-	int size;
+	size_t size;
 	char *chars;
 } line_t;
 

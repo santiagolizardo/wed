@@ -1,9 +1,7 @@
 #include <stdlib.h>
-#include <unistd.h>
 #include <stdbool.h>
 
 #include "keyboard.h"
-#include "process.h"
 #include "terminal.h"
 #include "screen.h"
 
@@ -20,6 +18,7 @@ int main(int argc, char** argv) {
 		draw_screen();
 		process_keypress();
 	}
+
 	return EXIT_SUCCESS;
 }
 

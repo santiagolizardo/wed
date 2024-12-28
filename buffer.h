@@ -1,12 +1,13 @@
 #pragma once
+#include <stdio.h>
 
 struct buffer_t {
 	char *d;
-	int len;
+	size_t len;
 };
 
 #define BUFFER_INIT {NULL, 0}
 
-void buffer_append(struct buffer_t* buffer, const char* s, int len);
-void buffer_free(struct buffer_t* buffer);
+void buffer_append(struct buffer_t* buffer, const char* s, size_t len);
+void buffer_free(const struct buffer_t* buffer);
 
